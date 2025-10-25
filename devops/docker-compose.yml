@@ -1,5 +1,6 @@
 services:
-  postgres:
+  # PostgreSQL para Order Service
+  postgres-orders:
     image: postgres:16
     container_name: orders-postgres
     environment:
@@ -11,15 +12,30 @@ services:
     volumes:
       - orders-postgres-data:/var/lib/postgresql/data
 
+  # PostgreSQL para Auth Service
+  postgres-auth:
+    image: postgres:16
+    container_name: auth-postgres
+    environment:
+      POSTGRES_DB: authdb
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+    ports:
+      - "5433:5432"
+    volumes:
+      - auth-postgres-data:/var/lib/postgresql/data
+
+  # RabbitMQ
   rabbitmq:
     image: rabbitmq:3-management
     container_name: orders-rabbitmq
     ports:
-      - "5672:5672"       # porta para conexões AMQP
-      - "15672:15672"     # porta para console de gerenciamento
+      - "5672:5672"   # porta para conexões AMQP
+      - "15672:15672" # porta para console de gerenciamento
     environment:
       RABBITMQ_DEFAULT_USER: guest
       RABBITMQ_DEFAULT_PASS: guest
 
 volumes:
   orders-postgres-data:
+  auth-postgres-data:
