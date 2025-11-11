@@ -8,6 +8,8 @@ import com.delivery.authservice.model.User;
 
 public class UserMapper {
 
+    private UserMapper() {}
+
     public static User toEntity(RegisterRequest dto, String encodedPassword) {
         User user = new User();
         user.setUsername(dto.username());
