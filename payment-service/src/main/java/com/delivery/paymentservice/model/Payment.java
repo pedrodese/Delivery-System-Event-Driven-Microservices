@@ -50,63 +50,71 @@ public class Payment {
         return id;
     }
 
-    public void setId(UUID id) {
+    public Payment setId(UUID id) {
         this.id = id;
+        return this;
     }
 
     public UUID getOrderId() {
         return orderId;
     }
 
-    public void setOrderId(UUID orderId) {
+    public Payment setOrderId(UUID orderId) {
         this.orderId = orderId;
+        return this;
     }
 
     public BigDecimal getAmount() {
         return amount;
     }
 
-    public void setAmount(BigDecimal amount) {
+    public Payment setAmount(BigDecimal amount) {
         this.amount = amount;
+        return this;
     }
 
     public PaymentMethod getPaymentMethod() {
         return paymentMethod;
     }
 
-    public void setPaymentMethod(PaymentMethod paymentMethod) {
+    public Payment setPaymentMethod(PaymentMethod paymentMethod) {
         this.paymentMethod = paymentMethod;
+        return this;
     }
 
     public PaymentStatus getStatus() {
         return status;
     }
 
-    public void setStatus(PaymentStatus status) {
+    public Payment setStatus(PaymentStatus status) {
         this.status = status;
+        return this;
     }
 
     public String getTransactionId() {
         return transactionId;
     }
 
-    public void setTransactionId(String transactionId) {
+    public Payment setTransactionId(String transactionId) {
         this.transactionId = transactionId;
+        return this;
     }
 
     public LocalDateTime getProcessedAt() {
         return processedAt;
     }
 
-    public void setProcessedAt(LocalDateTime processedAt) {
+    public Payment setProcessedAt(LocalDateTime processedAt) {
         this.processedAt = processedAt;
+        return this;
     }
 
     public LocalDateTime getCreatedAt() {
         return createdAt;
     }
 
-    public void setCreatedAt(LocalDateTime createdAt) {
+    public Payment setCreatedAt(LocalDateTime createdAt) {
         this.createdAt = createdAt;
+        return this;
     }
 }
