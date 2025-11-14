@@ -19,6 +19,8 @@ public class OrderService {
     private final OrderRepository repository;
     private final OrderEventPublisher publisher;
 
+    private static final String ORDER_NOT_FOUND_MESSAGE = "Order not found";
+
     public OrderService(OrderRepository repository, OrderEventPublisher publisher) {
         this.repository = repository;
         this.publisher = publisher;
@@ -41,13 +43,11 @@ public class OrderService {
     public OrderResponseDTO findById(UUID id) {
         return repository.findById(id)
                 .map(OrderMapper::toDTO)
-                .orElseThrow(() -> new ResourceNotFoundException("Order not found!"));
+                .orElseThrow(() -> new ResourceNotFoundException(ORDER_NOT_FOUND_MESSAGE));
     }
 
     public OrderResponseDTO updateStatus(UUID id, OrderStatus status) {
-        Order order = repository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Order not found!"));
-
+        Order order = findOrderOrThrow(id);
         order.setStatus(status);
         Order updatedOrder = repository.save(order);
         publisher.publishOrderUpdated(updatedOrder);
@@ -56,12 +56,15 @@ public class OrderService {
     }
 
     public void cancel(UUID id) {
-        Order order = repository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Order not found!"));
-
+        Order order = findOrderOrThrow(id);
         order.setStatus(OrderStatus.CANCELLED);
         repository.save(order);
         publisher.publishOrderCancelled(order);
+    }
+
+    private Order findOrderOrThrow(UUID id) {
+        return repository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException(ORDER_NOT_FOUND_MESSAGE));
     }
 }
 
