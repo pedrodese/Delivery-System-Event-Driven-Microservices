@@ -5,35 +5,14 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="5a077047-e70b-449d-8dfc-a5f454f6590a" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/../Makefile" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../order-service/src/main/java/com/delivery/orderservice/dto/PaymentApprovedEvent.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../order-service/src/main/java/com/delivery/orderservice/event/PaymentEventListener.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../payment-service/src/main/java/com/delivery/paymentservice/config/RabbitMQConfig.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../payment-service/src/main/java/com/delivery/paymentservice/controller/PaymentController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../payment-service/src/main/java/com/delivery/paymentservice/dto/OrderCreatedEvent.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../payment-service/src/main/java/com/delivery/paymentservice/dto/PaymentApprovedEvent.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../payment-service/src/main/java/com/delivery/paymentservice/dto/PaymentErrorResponse.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../payment-service/src/main/java/com/delivery/paymentservice/dto/PaymentResponse.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../payment-service/src/main/java/com/delivery/paymentservice/dto/ProcessPaymentRequest.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../payment-service/src/main/java/com/delivery/paymentservice/event/OrderEventListener.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../payment-service/src/main/java/com/delivery/paymentservice/event/PaymentEventPublisher.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../payment-service/src/main/java/com/delivery/paymentservice/exception/GlobalExceptionHandler.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../payment-service/src/main/java/com/delivery/paymentservice/exception/PaymentException.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../payment-service/src/main/java/com/delivery/paymentservice/exception/ResourceNotFoundException.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../payment-service/src/main/java/com/delivery/paymentservice/mapper/PaymentMapper.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../payment-service/src/main/java/com/delivery/paymentservice/repository/PaymentRepository.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../payment-service/src/main/java/com/delivery/paymentservice/service/PaymentService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/.gitignore" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/devops.iml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/docker-compose.yml" beforeDir="false" afterPath="$PROJECT_DIR$/docker-compose.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../order-service/src/main/java/com/delivery/orderservice/config/RabbitMQConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/../order-service/src/main/java/com/delivery/orderservice/config/RabbitMQConfig.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../order-service/src/main/java/com/delivery/orderservice/constants/RabbitMQConstants.java" beforeDir="false" afterPath="$PROJECT_DIR$/../order-service/src/main/java/com/delivery/orderservice/constants/RabbitMQConstants.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../order-service/src/main/java/com/delivery/orderservice/enums/OrderStatus.java" beforeDir="false" afterPath="$PROJECT_DIR$/../order-service/src/main/java/com/delivery/orderservice/enums/OrderStatus.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../payment-service/src/main/java/com/delivery/paymentservice/PaymentServiceApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/../payment-service/src/main/java/com/delivery/paymentservice/PaymentServiceApplication.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../payment-service/src/main/java/com/delivery/paymentservice/model/Payment.java" beforeDir="false" afterPath="$PROJECT_DIR$/../payment-service/src/main/java/com/delivery/paymentservice/model/Payment.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../api-gateway/Dockerfile" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../auth-service/Dockerfile" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../config-server/Dockerfile" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../eureka-server/Dockerfile" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../order-service/Dockerfile" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../payment-service/Dockerfile" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../payment-service/src/main/java/com/delivery/paymentservice/config/RabbitMQConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/../payment-service/src/main/java/com/delivery/paymentservice/config/RabbitMQConfig.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -80,7 +59,7 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1763162674945</updated>
-      <workItem from="1763162676037" duration="1317000" />
+      <workItem from="1763162676037" duration="1423000" />
     </task>
     <servers />
   </component>

@@ -55,3 +55,4 @@ public class RabbitMQConfig {
                 .to(paymentExchange)
                 .with(RabbitMQConstants.PAYMENT_ROUTING_KEY_REFUNDED);
     }
+}
