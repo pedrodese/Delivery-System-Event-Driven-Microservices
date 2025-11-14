@@ -1,12 +1,10 @@
 .PHONY: help build up down logs restart clean rebuild status test health
 
-# Cores para output
 GREEN  := $(shell tput -Txterm setaf 2)
 YELLOW := $(shell tput -Txterm setaf 3)
 RED    := $(shell tput -Txterm setaf 1)
 RESET  := $(shell tput -Txterm sgr0)
 
-# Help (mostra todos os comandos disponíveis)
 help:
 	@echo ""
 	@echo "${GREEN}Delivery System - Makefile Commands${RESET}"
