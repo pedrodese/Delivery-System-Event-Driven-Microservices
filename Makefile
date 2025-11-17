@@ -68,16 +68,16 @@ logs-tail:
 
 restart:
 	@if [ -z "$(service)" ]; then \
-		echo "${YELLOW}🔄 Restarting all services...${RESET}"; \
+		echo "${YELLOW} Restarting all services...${RESET}"; \
 		cd devops && docker compose restart; \
 	else \
-		echo "${YELLOW}🔄 Restarting $(service)...${RESET}"; \
+		echo "${YELLOW} Restarting $(service)...${RESET}"; \
 		cd devops && docker compose restart $(service); \
 	fi
-	@echo "${GREEN}✅ Restart completed!${RESET}"
+	@echo "${GREEN} Restart completed!${RESET}"
 
 clean:
-	@echo "${RED}🧹 Cleaning all containers, volumes and images...${RESET}"
+	@echo "${RED} Cleaning all containers, volumes and images...${RESET}"
 	@cd devops && docker compose down -v
 	@docker system prune -f
 	@echo "${GREEN} Cleanup completed!${RESET}"
@@ -107,17 +107,17 @@ health:
 	@echo "${GREEN} Health Check:${RESET}"
 	@echo ""
 	@echo -n "${YELLOW}Config Server:${RESET} "
-	@curl -s http://localhost:8888/actuator/health 2>/dev/null | grep -q "UP" && echo "${GREEN}✅ UP${RESET}" || echo "${RED}❌ DOWN${RESET}"
+	@curl -s http://localhost:8888/actuator/health 2>/dev/null | grep -q "UP" && echo "${GREEN} UP${RESET}" || echo "${RED} DOWN${RESET}"
 	@echo -n "${YELLOW}Eureka Server:${RESET} "
-	@curl -s http://localhost:8761/actuator/health 2>/dev/null | grep -q "UP" && echo "${GREEN}✅ UP${RESET}" || echo "${RED}❌ DOWN${RESET}"
+	@curl -s http://localhost:8761/actuator/health 2>/dev/null | grep -q "UP" && echo "${GREEN} UP${RESET}" || echo "${RED} DOWN${RESET}"
 	@echo -n "${YELLOW}Auth Service:${RESET}  "
-	@curl -s http://localhost:8084/actuator/health 2>/dev/null | grep -q "UP" && echo "${GREEN}✅ UP${RESET}" || echo "${RED}❌ DOWN${RESET}"
+	@curl -s http://localhost:8084/actuator/health 2>/dev/null | grep -q "UP" && echo "${GREEN} UP${RESET}" || echo "${RED} DOWN${RESET}"
 	@echo -n "${YELLOW}Order Service:${RESET} "
-	@curl -s http://localhost:8081/actuator/health 2>/dev/null | grep -q "UP" && echo "${GREEN}✅ UP${RESET}" || echo "${RED}❌ DOWN${RESET}"
+	@curl -s http://localhost:8081/actuator/health 2>/dev/null | grep -q "UP" && echo "${GREEN} UP${RESET}" || echo "${RED} DOWN${RESET}"
 	@echo -n "${YELLOW}Payment Svc:${RESET}   "
-	@curl -s http://localhost:8082/actuator/health 2>/dev/null | grep -q "UP" && echo "${GREEN}✅ UP${RESET}" || echo "${RED}❌ DOWN${RESET}"
+	@curl -s http://localhost:8082/actuator/health 2>/dev/null | grep -q "UP" && echo "${GREEN} UP${RESET}" || echo "${RED} DOWN${RESET}"
 	@echo -n "${YELLOW}API Gateway:${RESET}   "
-	@curl -s http://localhost:8080/actuator/health 2>/dev/null | grep -q "UP" && echo "${GREEN}✅ UP${RESET}" || echo "${RED}❌ DOWN${RESET}"
+	@curl -s http://localhost:8080/actuator/health 2>/dev/null | grep -q "UP" && echo "${GREEN} UP${RESET}" || echo "${RED} DOWN${RESET}"
 	@echo ""
 
 test:

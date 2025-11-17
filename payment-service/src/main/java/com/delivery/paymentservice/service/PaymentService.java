@@ -79,27 +79,6 @@ public class PaymentService {
         }
     }
 
-    private void processPaymentByMethod(Payment payment) throws InterruptedException {
-        switch (payment.getPaymentMethod()) {
-            case PIX -> {
-                logger.info("Processing PIX payment - instant approval");
-                Thread.sleep(500);
-            }
-            case CREDIT_CARD -> {
-                logger.info("Processing CREDIT_CARD payment - simulating 3s delay");
-                Thread.sleep(3000);
-            }
-            case DEBIT_CARD -> {
-                logger.info("Processing DEBIT_CARD payment - simulating 2s delay");
-                Thread.sleep(2000);
-            }
-            case CASH -> {
-                logger.info("Processing CASH payment - pre-approved");
-                Thread.sleep(500);
-            }
-        }
-    }
-
     public PaymentResponse getByOrderId(UUID orderId) {
         Payment payment = repository.findByOrderId(orderId)
                 .orElseThrow(() -> new ResourceNotFoundException("Payment not found for order: " + orderId));
@@ -130,6 +109,27 @@ public class PaymentService {
         eventPublisher.publishPaymentRefunded(refundedPayment);
 
         return PaymentMapper.toDTO(refundedPayment);
+    }
+
+    private void processPaymentByMethod(Payment payment) throws InterruptedException {
+        switch (payment.getPaymentMethod()) {
+            case PIX -> {
+                logger.info("Processing PIX payment - instant approval");
+                Thread.sleep(500);
+            }
+            case CREDIT_CARD -> {
+                logger.info("Processing CREDIT_CARD payment - simulating 3s delay");
+                Thread.sleep(3000);
+            }
+            case DEBIT_CARD -> {
+                logger.info("Processing DEBIT_CARD payment - simulating 2s delay");
+                Thread.sleep(2000);
+            }
+            case CASH -> {
+                logger.info("Processing CASH payment - pre-approved");
+                Thread.sleep(500);
+            }
+        }
     }
 
     private String generateTransactionId() {
