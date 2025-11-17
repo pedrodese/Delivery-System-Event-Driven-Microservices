@@ -8,5 +8,5 @@ spring:
         git:
           uri: https://github.com/pedrodese/Delivery-System-Event-Driven-Microservices
           clone-on-start: true
-          default-label: main
+          default-label: master
           search-paths: devops/config
