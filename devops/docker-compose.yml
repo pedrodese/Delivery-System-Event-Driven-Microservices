@@ -108,7 +108,6 @@ services:
       - "8761:8761"
     environment:
       SPRING_PROFILES_ACTIVE: docker
-      SPRING_CONFIG_IMPORT: "optional:configserver:http://config-server:8888"
       CONFIG_SERVER_URL: http://config-server:8888
     networks:
       - delivery-network

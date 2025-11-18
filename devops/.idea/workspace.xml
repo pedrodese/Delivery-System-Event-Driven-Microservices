@@ -5,10 +5,23 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="5a077047-e70b-449d-8dfc-a5f454f6590a" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/../config-server/src/main/resources/application.yml" beforeDir="false" afterPath="$PROJECT_DIR$/../config-server/src/main/resources/application.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../api-gateway/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/../api-gateway/src/main/resources/application.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../auth-service/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/../auth-service/src/main/resources/application.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../config-server/src/main/resources/config/api-gateway.properties" beforeDir="false" afterPath="$PROJECT_DIR$/../config-server/src/main/resources/config/api-gateway.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../config-server/src/main/resources/config/auth-service.properties" beforeDir="false" afterPath="$PROJECT_DIR$/../config-server/src/main/resources/config/auth-service.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../config-server/src/main/resources/config/delivery-service.properties" beforeDir="false" afterPath="$PROJECT_DIR$/../config-server/src/main/resources/config/payment-service.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../config-server/src/main/resources/config/eureka-server.properties" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../config-server/src/main/resources/config/order-service.properties" beforeDir="false" afterPath="$PROJECT_DIR$/../config-server/src/main/resources/config/order-service.properties" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/config/api-gateway.properties" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/config/auth-service.properties" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/config/delivery-service.properties" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/config/eureka-server.properties" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/config/order-service.properties" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/docker-compose.yml" beforeDir="false" afterPath="$PROJECT_DIR$/docker-compose.yml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../eureka-server/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/../eureka-server/src/main/resources/application.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../order-service/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/../order-service/src/main/resources/application.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../payment-service/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/../payment-service/src/main/resources/application.properties" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -70,7 +83,7 @@
       <option name="presentableId" value="Default" />
       <updated>1763162674945</updated>
       <workItem from="1763162676037" duration="2081000" />
-      <workItem from="1763419056240" duration="3212000" />
+      <workItem from="1763419056240" duration="5674000" />
     </task>
     <servers />
   </component>
