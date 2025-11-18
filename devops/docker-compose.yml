@@ -92,7 +92,7 @@ services:
     networks:
       - delivery-network
     healthcheck:
-      test: [ "CMD", "sh", "-c", "wget --spider -q http://localhost:8888/actuator/health || exit 1" ]
+      test: ["CMD", "sh", "-c", "wget --spider -q http://localhost:8888/actuator/health || exit 1"]
       interval: 15s
       timeout: 10s
       retries: 10
@@ -108,6 +108,7 @@ services:
       - "8761:8761"
     environment:
       SPRING_PROFILES_ACTIVE: docker
+      SPRING_CONFIG_IMPORT: "optional:configserver:http://config-server:8888"
       CONFIG_SERVER_URL: http://config-server:8888
     networks:
       - delivery-network
@@ -115,11 +116,11 @@ services:
       config-server:
         condition: service_healthy
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:8761/actuator/health"]
-      interval: 10s
-      timeout: 5s
+      test: ["CMD", "sh", "-c", "wget --spider -q http://localhost:8761/actuator/health || exit 1"]
+      interval: 15s
+      timeout: 10s
       retries: 10
-      start_period: 40s
+      start_period: 60s
 
   # Auth Service
   auth-service:
@@ -131,13 +132,12 @@ services:
       - "8084:8084"
     environment:
       SPRING_PROFILES_ACTIVE: docker
+      SPRING_CONFIG_IMPORT: "optional:configserver:http://config-server:8888"
       CONFIG_SERVER_URL: http://config-server:8888
       EUREKA_SERVER_URL: http://eureka-server:8761/eureka
-      DB_HOST: postgres-auth
-      DB_PORT: 5432
-      DB_NAME: authdb
-      DB_USER: user
-      DB_PASSWORD: password
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres-auth:5432/authdb
+      SPRING_DATASOURCE_USERNAME: user
+      SPRING_DATASOURCE_PASSWORD: password
     networks:
       - delivery-network
     depends_on:
@@ -148,11 +148,11 @@ services:
       postgres-auth:
         condition: service_healthy
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:8084/actuator/health"]
-      interval: 10s
-      timeout: 5s
+      test: ["CMD", "sh", "-c", "wget --spider -q http://localhost:8084/actuator/health || exit 1"]
+      interval: 15s
+      timeout: 10s
       retries: 10
-      start_period: 60s
+      start_period: 90s
 
   # Order Service
   order-service:
@@ -164,17 +164,16 @@ services:
       - "8081:8081"
     environment:
       SPRING_PROFILES_ACTIVE: docker
+      SPRING_CONFIG_IMPORT: "optional:configserver:http://config-server:8888"
       CONFIG_SERVER_URL: http://config-server:8888
       EUREKA_SERVER_URL: http://eureka-server:8761/eureka
-      DB_HOST: postgres-orders
-      DB_PORT: 5432
-      DB_NAME: ordersdb
-      DB_USER: user
-      DB_PASSWORD: password
-      RABBITMQ_HOST: rabbitmq
-      RABBITMQ_PORT: 5672
-      RABBITMQ_USER: guest
-      RABBITMQ_PASSWORD: guest
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres-orders:5432/ordersdb
+      SPRING_DATASOURCE_USERNAME: user
+      SPRING_DATASOURCE_PASSWORD: password
+      SPRING_RABBITMQ_HOST: rabbitmq
+      SPRING_RABBITMQ_PORT: 5672
+      SPRING_RABBITMQ_USERNAME: guest
+      SPRING_RABBITMQ_PASSWORD: guest
     networks:
       - delivery-network
     depends_on:
@@ -187,11 +186,11 @@ services:
       rabbitmq:
         condition: service_healthy
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:8081/actuator/health"]
-      interval: 10s
-      timeout: 5s
+      test: ["CMD", "sh", "-c", "wget --spider -q http://localhost:8081/actuator/health || exit 1"]
+      interval: 15s
+      timeout: 10s
       retries: 10
-      start_period: 60s
+      start_period: 90s
 
   # Payment Service
   payment-service:
@@ -203,17 +202,16 @@ services:
       - "8082:8082"
     environment:
       SPRING_PROFILES_ACTIVE: docker
+      SPRING_CONFIG_IMPORT: "optional:configserver:http://config-server:8888"
       CONFIG_SERVER_URL: http://config-server:8888
       EUREKA_SERVER_URL: http://eureka-server:8761/eureka
-      DB_HOST: postgres-payments
-      DB_PORT: 5432
-      DB_NAME: paymentsdb
-      DB_USER: user
-      DB_PASSWORD: password
-      RABBITMQ_HOST: rabbitmq
-      RABBITMQ_PORT: 5672
-      RABBITMQ_USER: guest
-      RABBITMQ_PASSWORD: guest
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres-payments:5432/paymentsdb
+      SPRING_DATASOURCE_USERNAME: user
+      SPRING_DATASOURCE_PASSWORD: password
+      SPRING_RABBITMQ_HOST: rabbitmq
+      SPRING_RABBITMQ_PORT: 5672
+      SPRING_RABBITMQ_USERNAME: guest
+      SPRING_RABBITMQ_PASSWORD: guest
     networks:
       - delivery-network
     depends_on:
@@ -226,11 +224,11 @@ services:
       rabbitmq:
         condition: service_healthy
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:8082/actuator/health"]
-      interval: 10s
-      timeout: 5s
+      test: ["CMD", "sh", "-c", "wget --spider -q http://localhost:8082/actuator/health || exit 1"]
+      interval: 15s
+      timeout: 10s
       retries: 10
-      start_period: 60s
+      start_period: 90s
 
   # API Gateway
   api-gateway:
@@ -242,6 +240,7 @@ services:
       - "8080:8080"
     environment:
       SPRING_PROFILES_ACTIVE: docker
+      SPRING_CONFIG_IMPORT: "optional:configserver:http://config-server:8888"
       CONFIG_SERVER_URL: http://config-server:8888
       EUREKA_SERVER_URL: http://eureka-server:8761/eureka
     networks:
@@ -258,11 +257,11 @@ services:
       payment-service:
         condition: service_healthy
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:8080/actuator/health"]
-      interval: 10s
-      timeout: 5s
+      test: ["CMD", "sh", "-c", "wget --spider -q http://localhost:8080/actuator/health || exit 1"]
+      interval: 15s
+      timeout: 10s
       retries: 10
-      start_period: 60s
+      start_period: 90s
 
 networks:
   delivery-network:

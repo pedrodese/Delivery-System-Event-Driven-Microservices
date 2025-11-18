@@ -2,11 +2,21 @@ server:
   port: 8888
 
 spring:
+  application:
+    name: config-server
+  profiles:
+    active: native
   cloud:
     config:
       server:
-        git:
-          uri: https://github.com/pedrodese/Delivery-System-Event-Driven-Microservices
-          clone-on-start: true
-          default-label: master
-          search-paths: devops/config
+        native:
+          search-locations: classpath:/config
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
+  endpoint:
+    health:
+      show-details: always
