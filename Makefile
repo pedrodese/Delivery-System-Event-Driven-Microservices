@@ -49,7 +49,7 @@ up:
 	@echo "${GREEN} Starting all services...${RESET}"
 	@cd devops && docker compose up -d
 	@echo "${GREEN} All services started!${RESET}"
-	@echo "${YELLOW}📊 Access points:${RESET}"
+	@echo "${YELLOW} Access points:${RESET}"
 	@echo "  - API Gateway:    http://localhost:8080"
 	@echo "  - Eureka:         http://localhost:8761"
 	@echo "  - Config Server:  http://localhost:8888"
@@ -100,7 +100,7 @@ rebuild:
 	@echo "${GREEN} Rebuild and start completed!${RESET}"
 
 status:
-	@echo "${GREEN}📊 Container Status:${RESET}"
+	@echo "${GREEN} Container Status:${RESET}"
 	@cd devops && docker compose ps
 
 health:
