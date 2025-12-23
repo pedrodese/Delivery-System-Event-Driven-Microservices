@@ -1,5 +1,6 @@
 package com.delivery.paymentservice.model;
 
+import com.delivery.paymentservice.dto.ProcessPaymentRequest;
 import com.delivery.paymentservice.enums.PaymentMethod;
 import com.delivery.paymentservice.enums.PaymentStatus;
 import jakarta.persistence.*;
@@ -35,15 +36,14 @@ public class Payment {
     private LocalDateTime processedAt;
 
     @Column(nullable = false, updatable = false)
-    private LocalDateTime createdAt = LocalDateTime.now();
+    private LocalDateTime createdAt;
 
     public Payment() {}
 
-    public Payment(UUID orderId, BigDecimal amount, PaymentMethod paymentMethod) {
-        this.orderId = orderId;
-        this.amount = amount;
-        this.paymentMethod = paymentMethod;
-        this.status = PaymentStatus.PENDING;
+    public Payment(ProcessPaymentRequest dto) {
+        this.orderId = dto.orderId();
+        this.amount = dto.amount();
+        this.paymentMethod = dto.paymentMethod();
     }
 
     public UUID getId() {
@@ -116,5 +116,11 @@ public class Payment {
     public Payment setCreatedAt(LocalDateTime createdAt) {
         this.createdAt = createdAt;
         return this;
+    }
+
+    @PrePersist
+    public void prePersist() {
+        this.createdAt = LocalDateTime.now();
+        this.status = PaymentStatus.PROCESSING;
     }
 }

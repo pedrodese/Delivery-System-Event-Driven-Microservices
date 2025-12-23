@@ -1,12 +1,10 @@
 package com.delivery.paymentservice.service;
 
-import com.delivery.paymentservice.dto.PaymentResponse;
 import com.delivery.paymentservice.dto.ProcessPaymentRequest;
 import com.delivery.paymentservice.enums.PaymentStatus;
 import com.delivery.paymentservice.event.PaymentEventPublisher;
 import com.delivery.paymentservice.exception.PaymentException;
 import com.delivery.paymentservice.exception.ResourceNotFoundException;
-import com.delivery.paymentservice.mapper.PaymentMapper;
 import com.delivery.paymentservice.model.Payment;
 import com.delivery.paymentservice.repository.PaymentRepository;
 import org.slf4j.Logger;
@@ -34,8 +32,7 @@ public class PaymentService {
     }
 
     @Transactional
-    public PaymentResponse processPayment(ProcessPaymentRequest request) {
-        logger.info("Processing payment for order: {}", request.orderId());
+    public Payment processPayment(ProcessPaymentRequest request) {
         validatePaymentDoesNotExist(request.orderId());
         Payment payment = createPendingPayment(request);
         try {
@@ -47,58 +44,45 @@ public class PaymentService {
         }
     }
 
-    public PaymentResponse getByOrderId(UUID orderId) {
-        Payment payment = findPaymentByOrderIdOrThrow(orderId);
-        return PaymentMapper.toDTO(payment);
+    public Payment getByOrderId(UUID orderId) {
+        return findPaymentByOrderIdOrThrow(orderId);
     }
 
-    public List<PaymentResponse> findAll() {
+    public List<Payment> findAll() {
         return repository.findAll()
                 .stream()
-                .map(PaymentMapper::toDTO)
                 .toList();
     }
 
     @Transactional
-    public PaymentResponse refund(UUID id) {
+    public Payment refund(UUID id) {
         Payment payment = findPaymentByIdOrThrow(id);
-
         validatePaymentCanBeRefunded(payment);
-
         return executeRefund(payment);
     }
 
     private void validatePaymentDoesNotExist(UUID orderId) {
         if (repository.existsByOrderId(orderId)) {
-            logger.warn("Payment already exists for order: {}", orderId);
             throw new PaymentException("Payment already exists for this order");
         }
     }
 
     private void validatePaymentCanBeRefunded(Payment payment) {
         if (payment.getStatus() != PaymentStatus.APPROVED) {
-            logger.warn("Attempted to refund non-approved payment: {} with status: {}",
-                    payment.getId(), payment.getStatus());
             throw new PaymentException("Only approved payments can be refunded");
         }
     }
 
     private Payment createPendingPayment(ProcessPaymentRequest request) {
-        Payment payment = PaymentMapper.toEntity(request);
-        payment.setStatus(PaymentStatus.PROCESSING);
+        Payment payment = new Payment(request);
         return repository.save(payment);
     }
 
-    private PaymentResponse approvePayment(Payment payment) throws InterruptedException {
+    private Payment approvePayment(Payment payment) throws InterruptedException {
         processPaymentByMethod(payment);
         Payment approvedPayment = updatePaymentAsApproved(payment);
-
-        logger.info("Payment approved for order: {} with transaction: {}",
-                approvedPayment.getOrderId(), approvedPayment.getTransactionId());
-
         eventPublisher.publishPaymentApproved(approvedPayment);
-
-        return PaymentMapper.toDTO(approvedPayment);
+        return approvedPayment;
     }
 
     private Payment updatePaymentAsApproved(Payment payment) {
@@ -108,18 +92,12 @@ public class PaymentService {
         return repository.save(payment);
     }
 
-    private PaymentResponse executeRefund(Payment payment) {
+    private Payment executeRefund(Payment payment) {
         payment.setStatus(PaymentStatus.REFUNDED);
         payment.setProcessedAt(LocalDateTime.now());
-
         Payment refundedPayment = repository.save(payment);
-
-        logger.info("Payment refunded: {} for order: {}",
-                refundedPayment.getId(), refundedPayment.getOrderId());
-
         eventPublisher.publishPaymentRefunded(refundedPayment);
-
-        return PaymentMapper.toDTO(refundedPayment);
+        return refundedPayment;
     }
 
     private void processPaymentByMethod(Payment payment) throws InterruptedException {
@@ -151,7 +129,7 @@ public class PaymentService {
         Thread.sleep(500);
     }
 
-    private PaymentResponse handleInterruptedException(Payment payment, InterruptedException e) {
+    private Payment handleInterruptedException(Payment payment, InterruptedException e) {
         Thread.currentThread().interrupt();
         logger.error("Payment processing interrupted for order: {}", payment.getOrderId(), e);
 
@@ -161,7 +139,7 @@ public class PaymentService {
         throw new PaymentException("Payment processing was interrupted");
     }
 
-    private PaymentResponse handlePaymentFailure(Payment payment, Exception e) {
+    private Payment handlePaymentFailure(Payment payment, Exception e) {
         logger.error("Payment failed for order: {}", payment.getOrderId(), e);
 
         Payment failedPayment = markPaymentAsFailed(payment);
@@ -186,17 +164,11 @@ public class PaymentService {
 
     private Payment findPaymentByIdOrThrow(UUID id) {
         return repository.findById(id)
-                .orElseThrow(() -> {
-                    logger.warn("Payment not found with id: {}", id);
-                    return new ResourceNotFoundException("Payment not found");
-                });
+                .orElseThrow(() -> new ResourceNotFoundException("Payment not found"));
     }
 
     private Payment findPaymentByOrderIdOrThrow(UUID orderId) {
         return repository.findByOrderId(orderId)
-                .orElseThrow(() -> {
-                    logger.warn("Payment not found for order: {}", orderId);
-                    return new ResourceNotFoundException("Payment not found for order: " + orderId);
-                });
+                .orElseThrow(() -> new ResourceNotFoundException("Payment not found"));
     }
 }

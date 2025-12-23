@@ -2,7 +2,6 @@ package com.delivery.paymentservice.event;
 
 import com.delivery.paymentservice.constants.RabbitMQConstants;
 import com.delivery.paymentservice.dto.PaymentApprovedEvent;
-import com.delivery.paymentservice.mapper.PaymentMapper;
 import com.delivery.paymentservice.model.Payment;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,7 +21,7 @@ public class PaymentEventPublisher {
 
     public void publishPaymentApproved(Payment payment) {
         logger.info("Publishing payment approved event for order: {}", payment.getOrderId());
-        PaymentApprovedEvent event = PaymentMapper.toApprovedEvent(payment);
+        PaymentApprovedEvent event = new PaymentApprovedEvent(payment);
         rabbitTemplate.convertAndSend(
                 RabbitMQConstants.PAYMENT_EXCHANGE,
                 RabbitMQConstants.PAYMENT_ROUTING_KEY_APPROVED,
@@ -33,7 +32,7 @@ public class PaymentEventPublisher {
 
     public void publishPaymentFailed(Payment payment) {
         logger.info("Publishing payment failed event for order: {}", payment.getOrderId());
-        PaymentApprovedEvent event = PaymentMapper.toApprovedEvent(payment);
+        PaymentApprovedEvent event = new PaymentApprovedEvent(payment);
         rabbitTemplate.convertAndSend(
                 RabbitMQConstants.PAYMENT_EXCHANGE,
                 RabbitMQConstants.PAYMENT_ROUTING_KEY_FAILED,
@@ -44,7 +43,7 @@ public class PaymentEventPublisher {
 
     public void publishPaymentRefunded(Payment payment) {
         logger.info("Publishing payment refunded event for order: {}", payment.getOrderId());
-        PaymentApprovedEvent event = PaymentMapper.toApprovedEvent(payment);
+        PaymentApprovedEvent event = new PaymentApprovedEvent(payment);
         rabbitTemplate.convertAndSend(
                 RabbitMQConstants.PAYMENT_EXCHANGE,
                 RabbitMQConstants.PAYMENT_ROUTING_KEY_REFUNDED,
