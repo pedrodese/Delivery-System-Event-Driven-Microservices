@@ -1,5 +1,6 @@
 package com.delivery.orderservice.model;
 
+import com.delivery.orderservice.dto.CreateOrderDTO;
 import com.delivery.orderservice.enums.OrderStatus;
 import jakarta.persistence.*;
 
@@ -29,11 +30,9 @@ public class Order implements Serializable {
 
     public Order() {}
 
-    public Order(String customerName, String address, OrderStatus status) {
-        this.customerName = customerName;
-        this.address = address;
-        this.status = status;
-        this.createdAt = LocalDateTime.now();
+    public Order(CreateOrderDTO dto) {
+        this.customerName = dto.customerName();
+        this.address = dto.address();
     }
 
     public UUID getId() {

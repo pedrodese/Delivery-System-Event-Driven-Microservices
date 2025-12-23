@@ -1,11 +1,9 @@
 package com.delivery.orderservice.service;
 
 import com.delivery.orderservice.dto.CreateOrderDTO;
-import com.delivery.orderservice.dto.OrderResponseDTO;
 import com.delivery.orderservice.enums.OrderStatus;
 import com.delivery.orderservice.event.OrderEventPublisher;
 import com.delivery.orderservice.exception.ResourceNotFoundException;
-import com.delivery.orderservice.mapper.OrderMapper;
 import com.delivery.orderservice.model.Order;
 import com.delivery.orderservice.repository.OrderRepository;
 import org.springframework.stereotype.Service;
@@ -26,33 +24,28 @@ public class OrderService {
         this.publisher = publisher;
     }
 
-    public OrderResponseDTO create(CreateOrderDTO dto) {
-        Order order = OrderMapper.toEntity(dto);
+    public Order create(CreateOrderDTO dto) {
+        Order order = new Order(dto);
         Order savedOrder = repository.save(order);
         publisher.publishOrderCreated(savedOrder);
-        return OrderMapper.toDTO(savedOrder);
+        return savedOrder;
     }
 
-    public List<OrderResponseDTO> findAll() {
-        return repository.findAll()
-                .stream()
-                .map(OrderMapper::toDTO)
-                .toList();
+    public List<Order> findAll() {
+        return repository.findAll();
     }
 
-    public OrderResponseDTO findById(UUID id) {
+    public Order findById(UUID id) {
         return repository.findById(id)
-                .map(OrderMapper::toDTO)
                 .orElseThrow(() -> new ResourceNotFoundException(ORDER_NOT_FOUND_MESSAGE));
     }
 
-    public OrderResponseDTO updateStatus(UUID id, OrderStatus status) {
+    public Order updateStatus(UUID id, OrderStatus status) {
         Order order = findOrderOrThrow(id);
         order.setStatus(status);
         Order updatedOrder = repository.save(order);
         publisher.publishOrderUpdated(updatedOrder);
-
-        return OrderMapper.toDTO(updatedOrder);
+        return updatedOrder;
     }
 
     public void cancel(UUID id) {

@@ -24,19 +24,24 @@ public class OrderController {
 
     @PostMapping
     public ResponseEntity<OrderResponseDTO> create(@Valid @RequestBody CreateOrderDTO dto) {
-        OrderResponseDTO createdOrder = service.create(dto);
+        OrderResponseDTO createdOrder = new OrderResponseDTO(service.create(dto));
         URI location = URI.create("/orders/" + createdOrder.id());
         return ResponseEntity.created(location).body(createdOrder);
     }
 
     @GetMapping
     public ResponseEntity<List<OrderResponseDTO>> findAll() {
-        return ResponseEntity.ok(service.findAll());
+        List<OrderResponseDTO> response = service.findAll()
+                .stream()
+                .map(OrderResponseDTO::new)
+                .toList();
+        return ResponseEntity.ok(response);
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<OrderResponseDTO> findById(@PathVariable UUID id) {
-        return ResponseEntity.ok(service.findById(id));
+        OrderResponseDTO response = new OrderResponseDTO(service.findById(id));
+        return ResponseEntity.ok(response);
     }
 
     @PatchMapping("/{id}/status")
@@ -44,7 +49,8 @@ public class OrderController {
             @PathVariable UUID id,
             @RequestParam OrderStatus status
     ) {
-        return ResponseEntity.ok(service.updateStatus(id, status));
+        OrderResponseDTO response = new OrderResponseDTO(service.updateStatus(id, status));
+        return ResponseEntity.ok(response);
     }
 
     @DeleteMapping("/{id}")
