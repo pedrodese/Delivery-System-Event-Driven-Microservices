@@ -12,36 +12,42 @@ import java.util.UUID;
 @RequestMapping("/api/users")
 public class UserController {
 
-    private final UserService userService;
+    private final UserService service;
 
     public UserController(UserService userService) {
-        this.userService = userService;
+        this.service = userService;
     }
 
     @GetMapping
     public ResponseEntity<List<UserResponse>> findAll() {
-        return ResponseEntity.ok(userService.findAll());
+        List<UserResponse> users = service.findAll()
+                .stream()
+                .map(UserResponse::new)
+                .toList();
+        return ResponseEntity.ok(users);
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<UserResponse> findById(@PathVariable UUID id) {
-        return ResponseEntity.ok(userService.findById(id));
+        UserResponse response = new UserResponse(service.findById(id));
+        return ResponseEntity.ok(response);
     }
 
     @GetMapping("/username/{username}")
     public ResponseEntity<UserResponse> findByUsername(@PathVariable String username) {
-        return ResponseEntity.ok(userService.findByUsername(username));
+        UserResponse response = new UserResponse(service.findByUsername(username));
+        return ResponseEntity.ok(response);
     }
 
     @PatchMapping("/{id}/deactivate")
     public ResponseEntity<Void> deactivate(@PathVariable UUID id) {
-        userService.deactivate(id);
+        service.deactivate(id);
         return ResponseEntity.noContent().build();
     }
 
     @PatchMapping("/{id}/activate")
     public ResponseEntity<Void> activate(@PathVariable UUID id) {
-        userService.activate(id);
+        service.activate(id);
         return ResponseEntity.noContent().build();
     }
 }

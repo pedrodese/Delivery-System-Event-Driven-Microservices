@@ -1,9 +1,8 @@
 package com.delivery.authservice.model;
 
+import com.delivery.authservice.dto.RegisterRequest;
 import com.delivery.authservice.enums.Role;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotBlank;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
@@ -38,6 +37,17 @@ public class User {
     private LocalDateTime createdAt = LocalDateTime.now();
 
     private LocalDateTime updatedAt = LocalDateTime.now();
+
+    public User(RegisterRequest dto, String encodedPassword) {
+        this.username = dto.username();
+        this.email = dto.email();
+        this.password = encodedPassword;
+        this.role = dto.role();
+        this.phone = dto.phone();
+    }
+
+    public User() {
+    }
 
     public UUID getId() {
         return id;

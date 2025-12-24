@@ -36,7 +36,7 @@ public class AuthValidator {
     }
 
     public void validateUserIsActive(Boolean isActive) {
-        if (!isActive) {
+        if (Boolean.FALSE.equals(isActive)) {
             throw new BadRequestException("User is inactive");
         }
     }

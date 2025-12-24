@@ -3,27 +3,20 @@ package com.delivery.authservice.dto;
 import com.delivery.authservice.enums.Role;
 import com.delivery.authservice.model.User;
 
-import java.time.LocalDateTime;
 import java.util.UUID;
 
-public record UserResponse(
+public record UserInfo(
         UUID id,
         String username,
         String email,
-        Role role,
-        String phone,
-        Boolean active,
-        LocalDateTime createdAt
+        Role role
 ) {
-    public UserResponse(User entity) {
+    public UserInfo(User entity) {
         this (
                 entity.getId(),
                 entity.getUsername(),
                 entity.getEmail(),
-                entity.getRole(),
-                entity.getPhone(),
-                entity.getActive(),
-                entity.getCreatedAt()
+                entity.getRole()
         );
     }
 }

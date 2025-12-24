@@ -1,8 +1,6 @@
 package com.delivery.authservice.service;
 
-import com.delivery.authservice.dto.UserResponse;
 import com.delivery.authservice.exception.ResourceNotFoundException;
-import com.delivery.authservice.mapper.UserMapper;
 import com.delivery.authservice.model.User;
 import com.delivery.authservice.repository.UserRepository;
 import org.springframework.stereotype.Service;
@@ -21,21 +19,18 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
-    public List<UserResponse> findAll() {
+    public List<User> findAll() {
         return userRepository.findAll()
                 .stream()
-                .map(UserMapper::toUserResponse)
                 .toList();
     }
 
-    public UserResponse findById(UUID id) {
-        User user = findUserByIdOrThrow(id);
-        return UserMapper.toUserResponse(user);
+    public User findById(UUID id) {
+        return findUserByIdOrThrow(id);
     }
 
-    public UserResponse findByUsername(String username) {
-        User user = findUserByUsernameOrThrow(username);
-        return UserMapper.toUserResponse(user);
+    public User findByUsername(String username) {
+        return findUserByUsernameOrThrow(username);
     }
 
     public void deactivate(UUID id) {

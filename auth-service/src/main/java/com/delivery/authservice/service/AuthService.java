@@ -3,8 +3,8 @@ package com.delivery.authservice.service;
 import com.delivery.authservice.dto.AuthResponse;
 import com.delivery.authservice.dto.LoginRequest;
 import com.delivery.authservice.dto.RegisterRequest;
+import com.delivery.authservice.dto.UserInfo;
 import com.delivery.authservice.exception.ResourceNotFoundException;
-import com.delivery.authservice.mapper.UserMapper;
 import com.delivery.authservice.model.User;
 import com.delivery.authservice.repository.UserRepository;
 import com.delivery.authservice.util.JwtUtil;
@@ -36,7 +36,7 @@ public class AuthService {
         validator.validateEmailExists(request.email());
 
         String encodedPassword = passwordEncoder.encode(request.password());
-        User user = UserMapper.toEntity(request, encodedPassword);
+        User user = new User(request, encodedPassword);
         User savedUser = userRepository.save(user);
 
         return buildAuthResponse(savedUser);
@@ -62,11 +62,13 @@ public class AuthService {
                 user.getRole()
         );
 
+        UserInfo userInfo = new UserInfo(user);
+
         return new AuthResponse(
                 token,
                 TOKEN_TYPE,
                 jwtUtil.getExpirationTime(),
-                UserMapper.toUserInfo(user)
+                userInfo
         );
     }
 
