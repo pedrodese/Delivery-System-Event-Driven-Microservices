@@ -4,11 +4,12 @@ import com.delivery.authservice.dto.AuthResponse;
 import com.delivery.authservice.dto.LoginRequest;
 import com.delivery.authservice.dto.RegisterRequest;
 import com.delivery.authservice.dto.UserInfo;
+import com.delivery.authservice.exception.BadRequestException;
 import com.delivery.authservice.exception.ResourceNotFoundException;
 import com.delivery.authservice.model.User;
 import com.delivery.authservice.repository.UserRepository;
 import com.delivery.authservice.util.JwtUtil;
-import com.delivery.authservice.validator.AuthValidator;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -19,21 +20,19 @@ public class AuthService {
     private static final String TOKEN_TYPE = "Bearer";
 
     private final UserRepository userRepository;
-    private final AuthValidator validator;
     private final PasswordEncoder passwordEncoder;
     private final JwtUtil jwtUtil;
 
-    public AuthService(UserRepository userRepository, AuthValidator validator, PasswordEncoder passwordEncoder, JwtUtil jwtUtil) {
+    public AuthService(UserRepository userRepository, PasswordEncoder passwordEncoder, JwtUtil jwtUtil) {
         this.userRepository = userRepository;
-        this.validator = validator;
         this.passwordEncoder = passwordEncoder;
         this.jwtUtil = jwtUtil;
     }
 
     @Transactional
     public AuthResponse register(RegisterRequest request) {
-        validator.validateUsernameExists(request.username());
-        validator.validateEmailExists(request.email());
+        validateUsernameExists(request.username());
+        validateEmailExists(request.email());
 
         String encodedPassword = passwordEncoder.encode(request.password());
         User user = new User(request, encodedPassword);
@@ -45,14 +44,39 @@ public class AuthService {
     @Transactional(readOnly = true)
     public AuthResponse login(LoginRequest request) {
         User user = findUserByUsername(request.username());
-        validator.validateUserPassword(request.password(), user.getPassword());
-        validator.validateUserIsActive(user.getActive());
+        validateUserPassword(request.password(), user.getPassword());
+        validateUserIsActive(user.getActive());
 
         return buildAuthResponse(user);
     }
 
     public Boolean validateToken(String token) {
         return jwtUtil.validateToken(token);
+    }
+
+    private void validateUsernameExists(String username) {
+        if (Boolean.TRUE.equals(userRepository.existsByUsername(username))) {
+            throw new BadRequestException("Username already exists");
+        }
+    }
+
+    private void validateEmailExists(String email) {
+        if (Boolean.TRUE.equals(userRepository.existsByEmail(email))) {
+            throw new BadRequestException("Email already exists");
+        }
+    }
+
+    private void validateUserPassword(String requestPassword, String userPassword) {
+        if (!passwordEncoder.matches(requestPassword, userPassword)) {
+            throw new BadCredentialsException("Invalid credentials");
+        }
+    }
+
+
+    private void validateUserIsActive(Boolean isActive) {
+        if (Boolean.FALSE.equals(isActive)) {
+            throw new BadRequestException("User is inactive");
+        }
     }
 
     private AuthResponse buildAuthResponse(User user) {
